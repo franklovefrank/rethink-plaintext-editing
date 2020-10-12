@@ -7,3 +7,48 @@
   align-items: center;
   justify-content: center;
 }
+
+.forminline {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+/* Add some margins for each label */
+.forminline label {
+  margin: 5px 10px 5px 0;
+}
+
+/* Style the input fields */
+.forminline input {
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+/* Style the submit button */
+.forminline button {
+  padding: 10px 20px;
+  background-color: dodgerblue;
+  border: 1px solid #ddd;
+  color: white;
+}
+
+.forminline button2 {
+  padding: 10px 20px;
+  background-color: dodgerblue;
+  border: 1px solid #ddd;
+  color: white;
+  margin-left: 30px;
+}
+
+
+.forminline button:hover {
+  background-color: royalblue;
+}
+
+.forminline button2:hover {
+  background-color: royalblue;
+}

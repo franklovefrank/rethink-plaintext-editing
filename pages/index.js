@@ -14,7 +14,6 @@ import IconPlaintextSVG from '../public/icon-plaintext.svg';
 import IconMarkdownSVG from '../public/icon-markdown.svg';
 import IconJavaScriptSVG from '../public/icon-javascript.svg';
 import IconJSONSVG from '../public/icon-json.svg';
-
 import css from './style.module.css';
 
 const TYPE_TO_ICON = {
@@ -24,9 +23,13 @@ const TYPE_TO_ICON = {
   'application/json': IconJSONSVG
 };
 
+
 function FilesTable({ files, activeFile, setActiveFile }) {
+
+ 
   return (
     <div className={css.files}>
+     
       <table>
         <thead>
           <tr>
@@ -73,8 +76,11 @@ function FilesTable({ files, activeFile, setActiveFile }) {
 FilesTable.propTypes = {
   files: PropTypes.arrayOf(PropTypes.object),
   activeFile: PropTypes.object,
-  setActiveFile: PropTypes.func
+  setActiveFile: PropTypes.func,
+  write: PropTypes.func,
 };
+
+
 
 function Previewer({ file }) {
   const [value, setValue] = useState('');
@@ -99,8 +105,8 @@ Previewer.propTypes = {
 
 // Uncomment keys to register editors for media types
 const REGISTERED_EDITORS = {
-  // "text/plain": PlaintextEditor,
-  // "text/markdown": MarkdownEditor,
+  "text/plain": PlaintextEditor,
+  //"text/markdown": MarkdownEditor,
 };
 
 function PlaintextFilesChallenge() {
@@ -112,10 +118,23 @@ function PlaintextFilesChallenge() {
     setFiles(files);
   }, []);
 
-  const write = file => {
-    console.log('Writing soon... ', file.name);
 
-    // TODO: Write the file to the `files` array
+  const write = file => {
+
+    const updated = new Date();
+    const savedData = localStorage.getItem(file.name);
+    const raw = JSON.parse(savedData);
+    const value = ' '
+    if (raw) {
+      const value = raw.blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+    }
+    const savefile = new File(
+      [{ value }], file.name, { type: activeFile.type, lastModified: updated });
+    var filtered = files.filter(function (el) { return el.name != file.name; });
+    setActiveFile(savefile)
+    filtered.push(savefile)
+    setFiles(filtered)
+    
   };
 
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
@@ -139,6 +158,7 @@ function PlaintextFilesChallenge() {
           files={files}
           activeFile={activeFile}
           setActiveFile={setActiveFile}
+          write={write}
         />
 
         <div style={{ flex: 1 }}></div>
