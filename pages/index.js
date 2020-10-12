@@ -26,10 +26,10 @@ const TYPE_TO_ICON = {
 
 function FilesTable({ files, activeFile, setActiveFile }) {
 
- 
+
   return (
     <div className={css.files}>
-     
+
       <table>
         <thead>
           <tr>
@@ -122,19 +122,22 @@ function PlaintextFilesChallenge() {
   const write = file => {
 
     const updated = new Date();
+    const value = ' '
+    //parse city 
     const savedData = localStorage.getItem(file.name);
     const raw = JSON.parse(savedData);
-    const value = ' '
+
     if (raw) {
       const value = raw.blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
     }
     const savefile = new File(
       [{ value }], file.name, { type: activeFile.type, lastModified: updated });
-    var filtered = files.filter(function (el) { return el.name != file.name; });
     setActiveFile(savefile)
+    //replacing the file if it already exists 
+    var filtered = files.filter(function (el) { return el.name != file.name; });
     filtered.push(savefile)
     setFiles(filtered)
-    
+
   };
 
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;

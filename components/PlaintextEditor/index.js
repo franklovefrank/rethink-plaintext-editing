@@ -28,6 +28,7 @@ function PlaintextEditor({ file, write }) {
     saveEditorContent();
   }, [editorState]);
 
+   //pulls saved data from local storage and drops it into new editor 
   const getSavedEditorData = () => {
     const savedData = localStorage.getItem(file.name);
     if (savedData) {
@@ -38,15 +39,15 @@ function PlaintextEditor({ file, write }) {
     else { return null }
   }
 
-
+  //saves to local storage as content changes 
   const saveEditorContent = async () => {
     const raw = convertToRaw(editorState.getCurrentContent());
     localStorage.setItem(file.name, JSON.stringify(raw));
     return;
   }
 
-
-  const handleSave = async () => {
+    //pushes changes to file array
+  const handleSave = async () => { 
     const result = await saveEditorContent()
     write(file);
   }
